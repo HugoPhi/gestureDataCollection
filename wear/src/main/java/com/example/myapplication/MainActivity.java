@@ -40,7 +40,6 @@ public class MainActivity extends FragmentActivity
     private boolean isGyroPresent = false;
     private boolean isAccPresent = false;
 
-    private TextView tdate;
     private Button save, record;
     private Vibrator vibrator;
 
@@ -195,10 +194,6 @@ public class MainActivity extends FragmentActivity
         long date = System.currentTimeMillis();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss");
         dateCurrent = sdf.format(date);
-
-        if (tdate != null) {
-            tdate.setText(dateCurrent);
-        }
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             x = filter(event.values[0]);

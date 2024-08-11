@@ -1,81 +1,81 @@
-# 📱 Wearable Sensor Data Collector
+# 📱 Wearable Data Collection App
 
-This project is an Android application designed for Wear OS devices, allowing users to collect sensor data like accelerometer and gyroscope readings. The app is specifically tailored for gesture recognition and provides a streamlined user interface for recording and saving sensor data. 
+This project is designed to collect sensor data on the TicWatch Pro 0209 using various gestures. The data is stored in CSV files for further analysis. The app is optimized for WearOS devices, specifically the TicWatch Pro 0209.
 
-## 🛠 Features
+## ⚙️ Project Configuration
 
-- 📊 **Real-Time Sensor Data Collection**: Collect accelerometer and gyroscope data at different sampling rates.
-- ⏲️ **4-Second Countdown Timer**: Each gesture recording session lasts for 4 seconds.
-- 🔢 **Gesture Count Tracker**: Displays the number of gestures collected during the session.
-- 🎨 **User-Friendly Interface**: Simple and intuitive design with buttons to start, pause, and reset the recording process.
-- 💾 **Data Saving**: Automatically saves recorded sensor data as CSV files, ready for further analysis.
+- **Device:** TicWatch Pro 0209
+- **OS:** WearOS
+- **API Level:** 28 (Android 9.0 Pie)
+- **Build Tool Version:** 30.0.3
+- **Gradle Version:** 7.0.2
+- **Android Gradle Plugin Version:** 7.0.2
+- **Wearable Support Library:** `com.google.android.wearable:wearable:2.8.1`
+- **Ambient Mode Support Library:** `androidx.wear.ambient:ambient:1.0.0`
 
-## 🚀 Getting Started
+## 📋 How to Collect Data
 
-### Prerequisites
+1. **Start the App:**
+   - Launch the app on your TicWatch Pro 0209.
+   - You will see two dropdown menus and buttons to start data collection.
 
-- Android Studio
-- Wear OS device or emulator
+2. **Select Sampling Rate and Gesture:**
+   - **Sampling Rate:** Choose the desired sampling rate from the first dropdown (e.g., 20 dps, 25 dps, 30 dps).
+   - **Gesture:** Choose the gesture you want to collect data for from the second dropdown (e.g., Gesture 1, Gesture 2).
 
-### Installation
+3. **Record Data:**
+   - Press the **Record** button to start data collection. The session lasts for 4 seconds.
+   - During this time, the screen will be disabled to prevent accidental touches, and a countdown timer will indicate the remaining time.
+   - Once the session is completed, the data will be automatically saved in a CSV file.
 
-1. Clone the repository:
+4. **Reset Collection Count:**
+   - After data collection, the app will display the number of times data has been collected for the selected gesture.
+   - You can reset this count by pressing the **Reset** button.
 
-   ```bash
-   git clone https://github.com/yourusername/wearable-sensor-collector.git
-   ```
+## 📊 Data Format and Headers
 
-2. Open the project in Android Studio.
+The data collected during each session is saved in CSV format. Each CSV file is named according to the selected gesture and the timestamp of the session.
 
-3. Sync the project to download the necessary dependencies.
+### Data File Structure
 
-4. Run the application on a Wear OS device or emulator.
+- **File Location:** `/storage/emulated/0/Android/data/com.example.myapplication/files/`
+- **File Format:** CSV
+- **File Naming Convention:** `GestureName_YYYYMMDD_HH-mm-ss.csv`
 
-## 📝 Usage
+### Data Headers and Their Meanings
 
-1. **Select Sampling Rate**: Choose the desired sampling rate from the dropdown menu (20 dps, 25 dps, or 30 dps).
-2. **Select Gesture**: Choose the gesture you want to record from the available options.
-3. **Start Recording**: Press the `Record` button to start the 4-second recording session. The screen will lock during this period.
-4. **Save Data**: Once the timer finishes, the data is automatically saved, and you can reset the session using the `Reset` button.
+The CSV files have the following headers:
 
-## 📂 Project Structure
+1. **DATE:** The date of the data collection in `dd/MM/yyyy` format.
+2. **TIME:** The time of the data collection in `HH:mm:ss` format.
+3. **ax, ay, az:** Accelerometer data along the x, y, and z axes. These values represent the linear acceleration of the device in meters per second squared (m/s²).
+4. **gx, gy, gz:** Gyroscope data along the x, y, and z axes. These values represent the rate of rotation around the respective axes in radians per second (rad/s).
+5. **lx, ly, lz:** Linear acceleration data corrected by removing the gravity component. These are derived from the raw accelerometer data.
+6. **ma:** Magnitude of the accelerometer vector, calculated as `sqrt(ax² + ay² + az²)`. This value represents the total acceleration experienced by the device.
+7. **mg:** Magnitude of the gyroscope vector, calculated as `sqrt(gx² + gy² + gz²)`. This value represents the total rotational motion experienced by the device.
+8. **label:** The name of the gesture being recorded (e.g., Gesture 1, Gesture 2).
 
-- `MainActivity.java`: The main logic for sensor data collection and user interaction.
-- `activity_main.xml`: The layout file for the user interface.
-- `ScalarKalmanFilter.java`: The Kalman filter implementation for smoothing sensor data.
-- `AndroidManifest.xml`: Contains essential information about the app for the Android system.
+### Example Data Entry
 
-## 🛡️ Permissions
 
-The application requires the following permissions:
+|   DATE    |   TIME   |  ax  |   ay   |  az  |   gx   |   gy   |   gz   |  lx  |   ly   |  lz  |   ma  |   mg  |   label   |
+|:---------:|:--------:|:----:|:------:|:----:|:------:|:------:|:------:|:----:|:------:|:----:|:-----:|:-----:|:---------:|
+| 12/08/2024 | 14:23:45 | 0.01 | -0.02 | 9.81 | 0.0001 | 0.0003 | 0.0002 | 0.02 | -0.01 | 9.79 | 9.81  | 0.0004 | Gesture 1 |
 
-- `INTERNET`
-- `ACCESS_NETWORK_STATE`
-- `ACCESS_WIFI_STATE`
-- `WAKE_LOCK`
-- `VIBRATE`
-- `READ_EXTERNAL_STORAGE` (for devices with SDK version 32 or lower)
-- `WRITE_EXTERNAL_STORAGE` (for devices with SDK version 32 or lower)
 
-## 🌟 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+This example shows one row of data where:
 
-## 🛠️ Built With
+- The accelerometer recorded values close to `0` for `ax` and `ay` and close to `9.81` m/s² for `az`, indicating that the watch was lying flat.
+- The gyroscope recorded minimal rotation, with very small values for `gx`, `gy`, and `gz`.
+- The linear acceleration (`lx`, `ly`, `lz`) and magnitude values (`ma`, `mg`) are derived from the raw sensor data.
+- The data corresponds to "Gesture 1".
 
-- Java
-- Android Studio
-- Wear OS SDK
+### Understanding the Data
 
-## 📄 License
+- **Accelerometer Data (`ax`, `ay`, `az`):** Useful for detecting movement, orientation, and vibrations.
+- **Gyroscope Data (`gx`, `gy`, `gz`):** Helps in understanding rotational motion and orientation changes.
+- **Linear Acceleration (`lx`, `ly`, `lz`):** Provides insights into the actual movement by subtracting gravity.
+- **Magnitude Values (`ma`, `mg`):** Represent the intensity of the movement or rotation.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👏 Acknowledgements
-
-- Thanks to all the open-source contributors who helped make this project possible.
-- Special shoutout to the Wear OS development community for their amazing resources and support!
-
----
-
-🚀 **Enjoy using the Wearable Sensor Data Collector and start recognizing those gestures!**
+With this collected data, you can perform further analysis to understand user behaviors, identify specific gestures, and more.
